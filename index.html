@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app='zoo-thing' lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Angular-one Lecture</title>
+
+        <meta name='description' content=''>
+        <meta name='author' content=''>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+        <script src='./js/main.js'></script>
+        <style type='text/css'>
+          .extinct {
+            color: red;
+          }
+        </style>
+
+    </head>
+    <body>
+      <header ng-controller='WelcomeController as welcome'>
+        <h1>Hello, {{welcome.name}}!</h1>
+        <p>The time is {{welcome.now | date:"hh:mm:ssa"}}</p>
+      </header>
+
+      <main ng-controller='AnimalsController as ac'>
+        <h2>{{ac.all.length}} Animals</h2>
+        <p>Of the following species:</p>
+        <ul>
+          <li ng-repeat='floop in ac.types'>{{floop}}</li>
+        </ul>
+
+
+        <article ng-repeat="foo in ac.all | orderBy:'species' | limitTo:5">
+          <h3 ng-class="{ extinct: foo.type === 'Dinosaur'}">
+            {{foo.species}}
+            <small>{{foo.type}}</small>
+          </h3>
+
+          <img ng-src="{{foo.picture}}" width='200'>
+          <img ng-show="foo.type === 'Dinosaur'" src="http://amorphia-apparel.com/img450/rexnuke.png" width="50">
+        </article>
+      </main>
+
+    </body>
+</html>
