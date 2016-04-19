@@ -1,48 +1,66 @@
 <!DOCTYPE html>
-<html ng-app='zoo-thing' lang='en'>
+<html ng-app='shopulate' lang='en'>
     <head>
         <meta charset='utf-8'>
-        <title>Angular-one Lecture</title>
+        <title>Shopulate</title>
 
         <meta name='description' content=''>
         <meta name='author' content=''>
         <meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'>
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel='stylesheet' type='text/css' href='stylesheets/main.css'>
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
         <script src='./js/main.js'></script>
-        <style type='text/css'>
-          .extinct {
-            color: red;
-          }
-        </style>
 
     </head>
     <body>
-      <header ng-controller='WelcomeController as welcome'>
-        <h1>Hello, {{welcome.name}}!</h1>
-        <p>The time is {{welcome.now | date:"hh:mm:ssa"}}</p>
-      </header>
+      <section class='container' ng-controller='InventoryController as ic'>
 
-      <main ng-controller='AnimalsController as ac'>
-        <h2>{{ac.all.length}} Animals</h2>
-        <p>Of the following species:</p>
-        <ul>
-          <li ng-repeat='floop in ac.types'>{{floop}}</li>
-        </ul>
+        <form class='form-inline' novalidate name="createForm" ng-submit="ic.addNewItem(createForm)">
+          <input ng-model="ic.newItem.name" type="text" required placeholder="Item name" class="form-control">
+          <input ng-model="ic.newItem.price" type="number" required placeholder="Item price" class="form-control">
+          <input ng-model="ic.newItem.quantity" type="number" required placeholder="Item quantity" class="form-control">
+          <input ng-model="ic.newItem.color" type="text" required placeholder="Item color" class="form-control">
+          <input ng-model="ic.newItem.discount" type="number" required placeholder="Item discount" class="form-control">
+          <button class="btn btn-primary">
+            <i class="glyphicon glyphicon-plus"></i>
+          </button>
+        </form>
+
+        <table class='table table-striped'>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>{{ ic.color }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="merch in ic.all | orderBy:'quantity'">
+              <td>{{ merch.name }}</td>
+              <td ng-show="ic.GBP === false">
+                {{ ic.priceConvert(merch) | currency }}
+                <img ng-show="merch.discount > 0" src="https://tiy-learn-content.s3.amazonaws.com/98350f05-sale_2.png">
+              </td>
+              <td ng-show="ic.GBP === true">
+                {{ ic.priceConvert(merch) * 0.7 | currency:"£" }}
+                <img ng-show="merch.discount > 0" src="https://tiy-learn-content.s3.amazonaws.com/98350f05-sale_2.png">
+              </td>
+              <td>
+                {{ merch.quantity }}
+                <button class="btn btn-default btn-xs" ng-click="ic.minusOne(merch)">-</button>
+                <button class="btn btn-default btn-xs" ng-click="ic.plusOne(merch)">+</button>
+              </td>
+              <td>{{ merch.color }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <button ng-click='ic.convert()'>Convert</button>
 
 
-        <article ng-repeat="foo in ac.all | orderBy:'species' | limitTo:5">
-          <h3 ng-class="{ extinct: foo.type === 'Dinosaur'}">
-            {{foo.species}}
-            <small>{{foo.type}}</small>
-          </h3>
-
-          <img ng-src="{{foo.picture}}" width='200'>
-          <img ng-show="foo.type === 'Dinosaur'" src="http://amorphia-apparel.com/img450/rexnuke.png" width="50">
-        </article>
-      </main>
-
+      </section>
     </body>
 </html>
