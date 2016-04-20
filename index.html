@@ -50,8 +50,8 @@
                 <img ng-show="merch.discount > 0" src="https://tiy-learn-content.s3.amazonaws.com/98350f05-sale_2.png">
               </td>
               <td>
-                {{ merch.quantity }}
                 <button class="btn btn-default btn-xs" ng-click="ic.minusOne(merch)">-</button>
+                {{ merch.quantity | number : 0}}
                 <button class="btn btn-default btn-xs" ng-click="ic.plusOne(merch)">+</button>
               </td>
               <td>{{ merch.color }}</td>
@@ -59,6 +59,7 @@
           </tbody>
         </table>
         <button ng-click='ic.convert()'>Convert</button>
+
 
 
       </section>
